@@ -1,6 +1,3 @@
-# Note: CMake support is community-based. The maintainers do not use CMake
-# internally.
-
 cmake_minimum_required(VERSION 3.13)
 
 project(googletest-distribution)
@@ -30,7 +27,38 @@ if(GTEST_HAS_ABSL)
 endif()
 
 if(BUILD_GMOCK)
-  add_subdirectory( googlemock )
+  add_subdirectory(googlemock)
 else()
-  add_subdirectory( googletest )
+  add_subdirectory(googletest)
 endif()
+
+# Ajouter les sources et les en-têtes du projet TaskManager
+set(TASK_MANAGER_SOURCES
+    src/main.cpp
+    src/TaskManager.cpp
+    src/ThreadPool.cpp
+    src/PrintTask.cpp
+)
+
+set(TASK_MANAGER_HEADERS
+    include/TaskManager.h
+    include/ThreadPool.h
+    include/PrintTask.h
+    include/Task.h
+)
+
+# Ajouter l'exécutable pour le projet principal
+add_executable(TaskManager ${TASK_MANAGER_SOURCES} ${TASK_MANAGER_HEADERS})
+
+# Linker avec les bibliothèques de Google Test
+target_link_libraries(TaskManager gtest gtest_main pthread)
+
+# Ajouter les tests
+add_executable(runTests
+    test/test.cpp
+    src/PrintTask.cpp
+)
+
+target_link_libraries(runTests gtest gtest_main pthread)
+
+add_test(NAME runTests COMMAND runTests)
