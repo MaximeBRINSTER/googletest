@@ -1,6 +1,6 @@
-#include "taskmanager.h"
-#include "printtask.h"
-#include "threadpool.h"
+#include "TaskManager.h"
+#include "PrintTask.h"
+#include "ThreadPool.h"
 
 using namespace std;
 
